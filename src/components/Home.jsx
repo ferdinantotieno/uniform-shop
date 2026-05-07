@@ -9,7 +9,6 @@ const Home = () => {
       minHeight: "100vh",
       background: "#f4f6f8"
     },
-
     hero: {
       background: "linear-gradient(135deg, #3498db, #2ecc71)",
       color: "white",
@@ -18,17 +17,14 @@ const Home = () => {
       borderBottomLeftRadius: "30px",
       borderBottomRightRadius: "30px"
     },
-
     heroTitle: {
       fontSize: "40px",
       marginBottom: "10px"
     },
-
     heroText: {
       fontSize: "18px",
       marginBottom: "20px"
     },
-
     button: {
       padding: "12px 25px",
       border: "none",
@@ -39,28 +35,23 @@ const Home = () => {
       cursor: "pointer",
       textDecoration: "none"
     },
-
     features: {
       display: "grid",
       gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
       gap: "20px",
       padding: "40px 20px"
     },
-
     card: {
       background: "white",
       padding: "20px",
       borderRadius: "15px",
       boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-      textAlign: "center",
-      transition: "0.3s"
+      textAlign: "center"
     },
-
     cardTitle: {
       color: "#2c3e50",
       marginBottom: "10px"
     },
-
     cardText: {
       color: "#7f8c8d"
     }
@@ -76,7 +67,8 @@ const Home = () => {
           Your one-stop shop for everything you need at the best prices
         </p>
 
-        <Link to="/products" style={styles.button}>
+        {/* FIX: make sure route exists */}
+        <Link to="/getproducts" style={styles.button}>
           Shop Now
         </Link>
       </section>

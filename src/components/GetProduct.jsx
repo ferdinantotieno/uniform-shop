@@ -10,6 +10,10 @@ const GetProduct = () => {
   const [search, setSearch] = useState("")
   const [quantities, setQuantities] = useState({})
 
+  // ⭐ PAGINATION ADDED
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 6
+
   const navigate = useNavigate()
   const img_url = "https://ferdinant.alwaysdata.net/static/images/"
 
@@ -17,7 +21,13 @@ const GetProduct = () => {
     p.product_name.toLowerCase().includes(search.toLowerCase())
   )
 
-  // ➕ INCREASE
+  // ⭐ PAGINATION LOGIC ADDED
+  const indexOfLast = currentPage * itemsPerPage
+  const indexOfFirst = indexOfLast - itemsPerPage
+  const paginatedProducts = filteredProducts.slice(indexOfFirst, indexOfLast)
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage)
+
   const increaseQty = (id) => {
     setQuantities(prev => ({
       ...prev,
@@ -25,7 +35,6 @@ const GetProduct = () => {
     }))
   }
 
-  // ➖ DECREASE
   const decreaseQty = (id) => {
     setQuantities(prev => ({
       ...prev,
@@ -33,7 +42,6 @@ const GetProduct = () => {
     }))
   }
 
-  // 🛒 ADD TO CART
   const addToCart = (product) => {
     const id = product.id || product.product_id
     const qty = quantities[id] || 1
@@ -68,7 +76,6 @@ const GetProduct = () => {
     fetchProducts()
   }, [])
 
-  // 🎨 INLINE STYLES
   const styles = {
     page: {
       padding: "20px",
@@ -155,6 +162,21 @@ const GetProduct = () => {
       cursor: "pointer",
       width: "100%",
       marginTop: "5px"
+    },
+    // ⭐ PAGINATION STYLE
+    pagination: {
+      marginTop: "20px",
+      display: "flex",
+      justifyContent: "center",
+      gap: "10px"
+    },
+    pageBtn: {
+      padding: "8px 12px",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer",
+      background: "#3498db",
+      color: "white"
     }
   }
 
@@ -175,7 +197,8 @@ const GetProduct = () => {
 
       <div style={styles.grid}>
 
-        {filteredProducts.map((product) => {
+        {/* ⭐ PAGINATED DATA USED HERE */}
+        {paginatedProducts.map((product) => {
 
           const id = product.id || product.product_id
 
@@ -192,18 +215,12 @@ const GetProduct = () => {
               <p>{product.product_description}</p>
               <p style={styles.price}>Ksh {product.product_cost}</p>
 
-              {/* ➕ QUANTITY CONTROL */}
               <div style={styles.qtyBox}>
                 <button style={styles.btn} onClick={() => decreaseQty(id)}>-</button>
-
-                <span style={styles.qty}>
-                  {quantities[id] || 1}
-                </span>
-
+                <span style={styles.qty}>{quantities[id] || 1}</span>
                 <button style={styles.btn} onClick={() => increaseQty(id)}>+</button>
               </div>
 
-              {/* 🛒 ACTION BUTTONS */}
               <button
                 style={styles.cartBtn}
                 onClick={() => addToCart(product)}
@@ -230,6 +247,30 @@ const GetProduct = () => {
         })}
 
       </div>
+
+      {/* ⭐ PAGINATION CONTROLS */}
+      <div style={styles.pagination}>
+        <button
+          style={styles.pageBtn}
+          disabled={currentPage === 1}
+          onClick={() => setCurrentPage(currentPage - 1)}
+        >
+          Prev
+        </button>
+
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+
+        <button
+          style={styles.pageBtn}
+          disabled={currentPage === totalPages}
+          onClick={() => setCurrentPage(currentPage + 1)}
+        >
+          Next
+        </button>
+      </div>
+
     </div>
   )
 }
